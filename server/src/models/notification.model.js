@@ -7,7 +7,13 @@ const notificationSchema = new mongoose.Schema({
   },
   entity_id: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'entityModel',
     required: true,
+  },
+  entityModel: {
+    type: String,
+    required: true,
+    enum: ['Order', 'ServiceRequest', 'Review'],
   },
   message: {
     type: String,
@@ -16,6 +22,14 @@ const notificationSchema = new mongoose.Schema({
   isRead: {
     type: Boolean,
     default: false,
+  },
+  customer_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Customer',
+  },
+  serviceProvider_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ServiceProvider',
   },
 }, { timestamps: true });
 
