@@ -5,6 +5,11 @@ import connectDB from './database/index.js';
 
 dotenv.config({ path: './.env'});
 
+app.get('/', function(req, res) {
+  res.send('Hello World!');
+})
+
+
 connectDB()
   .then(()=>{
     app.on('error', (error)=>{
