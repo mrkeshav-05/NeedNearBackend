@@ -5,11 +5,6 @@ import connectDB from './database/index.js';
 
 dotenv.config({ path: './.env'});
 
-app.listen(3000, ()=>{
-  console.log('first app listening on port 3000!')
-})
-
-
 connectDB()
   .then(()=>{
     app.on('error', (error)=>{
