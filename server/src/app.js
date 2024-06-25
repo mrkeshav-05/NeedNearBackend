@@ -19,4 +19,15 @@ app.use(express.static('public'));
 
 app.use(cookieParser());
 
+
+import customerRouter from './routes/customer.routes.js'
+// Routes
+// This is the route for the user
+
+app.use('/api/auth/', customerRouter);
+// routes decaleration
+// This is the route for the video
+
+// http://localhost:8000/api/auth/register
+
 export { app };

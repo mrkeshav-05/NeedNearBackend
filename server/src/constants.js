@@ -1,1 +1,1 @@
-export const DB_NAME = "Need Near"
+export const DB_NAME = "NeedNear"
