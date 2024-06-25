@@ -34,6 +34,9 @@ const customerSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Location',
   },
+  refreshToken: {
+    type: String,
+  }
 }, { timestamps: true });
 
 export const Customer = mongoose.model('Customer', customerSchema);

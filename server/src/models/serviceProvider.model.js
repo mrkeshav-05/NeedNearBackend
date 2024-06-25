@@ -13,6 +13,9 @@ const serviceProviderSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Service',
   },
+  refreshToken: {
+    type: String,
+  },
 }, { timestamps: true });
 
 export const ServiceProvider = mongoose.model('ServiceProvider', serviceProviderSchema);
