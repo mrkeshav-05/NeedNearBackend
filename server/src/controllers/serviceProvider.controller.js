@@ -64,15 +64,15 @@ const registerServiceProvider = asyncHandler(async (req, res) => {
     console.log(serviceProvider);
 
     return res
-    .status(201)
-    .json(
-      new ApiResponse(201, "ServiceProvider registered successfully", {customer: createdCustomer, serviceProvider: serviceProvider})
-    )
+      .status(201)
+      .json(
+        new ApiResponse(201, "ServiceProvider registered successfully", { customer: createdCustomer, serviceProvider: serviceProvider })
+      )
   } catch (error) {
     throw new ApiError(500, error.message);
   }
 })
 
-export{
+export {
   registerServiceProvider,
 }
