@@ -1,9 +1,9 @@
-import { Customer } from "../models/Customer.model.js";
-import { ApiError } from "../utils/ApiError.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
-import { ServiceProvider } from "../models/serviceProvider.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { Customer } from "../../models/Customer.model.js";
+import { ApiError } from "../../utils/ApiError.js";
+import { ApiResponse } from "../../utils/ApiResponse.js";
+import { asyncHandler } from "../../utils/asyncHandler.js";
+import { ServiceProvider } from "../../models/serviceProvider.model.js";
+import { uploadOnCloudinary } from "../../utils/cloudinary.js";
 const registerServiceProvider = asyncHandler(async (req, res) => {
   try {
     const { fullName, email, phoneNumber, password, address } = req.body;

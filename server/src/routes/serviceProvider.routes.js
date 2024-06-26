@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { registerServiceProvider } from "../controllers/serviceProvider.controller.js";
+// import { registerServiceProvider } from "../controllers/serviceProvider/serviceProvider.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import { registerServiceProvider } from "../controllers/serviceProvider/registerServiceProvider.controller.js";
 
 const router = Router();
 
