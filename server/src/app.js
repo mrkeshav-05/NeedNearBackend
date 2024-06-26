@@ -20,11 +20,13 @@ app.use(express.static('public'));
 app.use(cookieParser());
 
 
-import customerRouter from './routes/customer.routes.js'
+import customerRouter from './routes/customer.routes.js';
+import serviceProviderRouter from './routes/serviceProvider.routes.js';
 // Routes
 // This is the route for the user
 
-app.use('/api/auth/', customerRouter);
+app.use('/api/auth/customer', customerRouter);
+app.use('/api/auth/serviceProvider', serviceProviderRouter);
 // routes decaleration
 // This is the route for the video
 

@@ -25,66 +25,70 @@ const registerCustomer = asyncHandler(async (req, res) => {
     // 8. check the user creation 
     // 9. send the response back to the client
   
-  const { fullName, email, phoneNumber, password, address} = req.body;
-  console.log(email);
-  if(
-    [fullName, email, phoneNumber, password, address].some((field)=>{
-      field?.trim() === ""
-    })
-  ){
-    throw new ApiError(400, "All fields are required");
-  }
-  // check if the user is already registered
-  const existingCustomer = await Customer.findOne({
-    $or: [
-      {email: email},
-      {phoneNumber: phoneNumber}
-    ]
-  }).then((customer)=>{
-    if(customer){
-      throw new ApiError(409, "User already exists with this email or phone number");
+  try {
+    const { fullName, email, phoneNumber, password, address} = req.body;
+    console.log(email);
+    if(
+      [fullName, email, phoneNumber, password, address].some((field)=>{
+        field?.trim() === ""
+      })
+    ){
+      throw new ApiError(400, "All fields are required");
     }
-  }).catch((error)=>{
-    throw new ApiError(500, error.message);
-  });
-
-  if(existingCustomer){
-    throw new ApiError(409, "User already exists !!!");
-  }
-
-  const profilePictureLocalPath = req.files?.profilePicture[0].path;
-  if(!profilePictureLocalPath){
-    throw new ApiError(400, "Profile picture is required");
-  }
-  const profilePicture = await uploadOnCloudinary(profilePictureLocalPath);
-
-  if(!profilePicture){
-    return new ApiError(400, "Avatar upload failed");
-  }
-
-  const customer = await Customer.create({
-    fullName,
-    email: email.toLowerCase(),
-    phoneNumber,
-    password,
-    profilePicture: profilePicture?.url || "",
-    address,
-  })
-  console.log(customer);
+    // check if the user is already registered
+    const existingCustomer = await Customer.findOne({
+      $or: [
+        {email: email},
+        {phoneNumber: phoneNumber}
+      ]
+    }).then((customer)=>{
+      if(customer){
+        throw new ApiError(409, "User already exists with this email or phone number");
+      }
+    }).catch((error)=>{
+      throw new ApiError(500, error.message);
+    });
   
-  const createdCustomer = await Customer.findById(customer._id).select(
-    "-password -refreshToken",
-  );
-
-  if(!createdCustomer){
-    throw new ApiError(500, "Somthing went wrong while entering the customer in the database");
+    if(existingCustomer){
+      throw new ApiError(409, "User already exists !!!");
+    }
+  
+    const profilePictureLocalPath = req.files?.profilePicture[0].path;
+    if(!profilePictureLocalPath){
+      throw new ApiError(400, "Profile picture is required");
+    }
+    const profilePicture = await uploadOnCloudinary(profilePictureLocalPath);
+  
+    if(!profilePicture){
+      return new ApiError(400, "Avatar upload failed");
+    }
+  
+    const customer = await Customer.create({
+      fullName,
+      email: email.toLowerCase(),
+      phoneNumber,
+      password,
+      profilePicture: profilePicture?.url || "",
+      address,
+    })
+    console.log(customer);
+    
+    const createdCustomer = await Customer.findById(customer._id).select(
+      "-password -refreshToken",
+    );
+  
+    if(!createdCustomer){
+      throw new ApiError(500, "Somthing went wrong while entering the customer in the database");
+    }
+  
+    return res
+    .status(201)
+    .json(
+      new ApiResponse(201, "Customer created successfully", createdCustomer)
+    )
+  } catch (error) {
+    throw new ApiError(500, error.message);
   }
-
-  return res
-  .status(201)
-  .json(
-    new ApiResponse(201, "Customer created successfully", createdCustomer)
-  )
 
 })
 
