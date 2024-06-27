@@ -27,6 +27,10 @@ const customerSchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
+  phoneNumberVerified: {
+    type: Boolean,
+    default: false,
+  },
   password: {
     type: String,
     required: true,
