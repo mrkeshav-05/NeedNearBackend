@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { generateAccessToken } from '../utils/tokens/generateAccessToken.js';
+import { generateRefreshToken } from '../utils/tokens/generateRefreshToke.js';
+import { generateEmailVerificationToken } from '../utils/tokens/generateEmailVerificationToken.js';
 
 const customerSchema = new mongoose.Schema({
   fullName: {
@@ -13,6 +16,10 @@ const customerSchema = new mongoose.Schema({
     required: true,
     unique: true,
     trim: true,
+  },
+  emailVerified: {
+    type: Boolean,
+    default: false,
   },
   phoneNumber: {
     type: String,
@@ -55,29 +62,15 @@ customerSchema.methods.isPasswordCorrect = async function (password) {
 }
 
 customerSchema.methods.generateAccessToken = async function () {
-  return jwt.sign(
-    {
-      _id: this._id,
-      email: this.email,
-      fullName: this.fullName,
-    },
-    process.env.ACCESS_TOKEN_SECRET,
-    {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRY || '15m'
-    }
-  )
+  return generateAccessToken(this);
 }
 
 customerSchema.methods.generateRefreshToken = async function () {
-  return jwt.sign(
-    {
-      _id: this._id,
-    },
-    process.env.REFRESH_TOKEN_SECRET,
-    {
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRY || '7d'
-    }
-  )
+  return generateRefreshToken(this);
+}
+
+customerSchema.methods.generateEmailVarificationToken = async function () {
+  return generateEmailVerificationToken(this);
 }
 
 

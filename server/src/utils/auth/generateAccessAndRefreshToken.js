@@ -1,4 +1,4 @@
-import { Customer } from "../models/Customer.model.js";
+import { Customer } from "../../models/Customer.model.js";
 
 const generateAccessAndRefreshToken = async (customer_id) => {
   try {

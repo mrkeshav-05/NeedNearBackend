@@ -1,8 +1,8 @@
 import { Customer } from "../../models/Customer.model.js";
-import { ApiError } from "../../utils/ApiError.js";
-import { ApiResponse } from "../../utils/ApiResponse.js";
-import { asyncHandler } from "../../utils/asyncHandler.js";
-import { generateAccessAndRefreshToken } from "../../utils/generateAccessAndRefreshToken.js";
+import { ApiError } from "../../utils/error/ApiError.js";
+import { ApiResponse } from "../../utils/response/ApiResponse.js";
+import { asyncHandler } from "../../utils/error/asyncHandler.js";
+import { generateAccessAndRefreshToken } from "../../utils/auth/generateAccessAndRefreshToken.js";
 const loginCustomer = asyncHandler(async (req, res) => {
   // steps to login user
     // 1. retrieve data from user as req.body (request body)

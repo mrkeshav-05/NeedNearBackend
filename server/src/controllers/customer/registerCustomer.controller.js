@@ -1,10 +1,12 @@
 import { Customer } from "../../models/Customer.model.js";
-import { ApiError } from "../../utils/ApiError.js";
-import { ApiResponse } from "../../utils/ApiResponse.js";
-import { asyncHandler } from "../../utils/asyncHandler.js";
-import { uploadOnCloudinary } from "../../utils/cloudinary.js";
+import { ApiError } from "../../utils/error/ApiError.js";
+import { ApiResponse } from "../../utils/response/ApiResponse.js";
+import { asyncHandler } from "../../utils/error/asyncHandler.js";
+import { uploadOnCloudinary } from "../../utils/cloud/cloudinary.js";
+import { generateEmailVerificationToken } from "../../utils/tokens/generateEmailVerificationToken.js";
+import { sendVerificationEmail } from "../../utils/auth/sendVerificationEmail.js";
 
-const registerCustomer = asyncHandler(async (req, res) => {
+const registerCustomer = asyncHandler(async (req, res, next) => {
   // steps to register a user ---
     // 1. get the user details from frontend(client)
     // 2. validation - not empty string
@@ -72,11 +74,17 @@ const registerCustomer = asyncHandler(async (req, res) => {
     if(!createdCustomer){
       throw new ApiError(500, "Somthing went wrong while entering the customer in the database");
     }
-  
+
+    const generatedTokenForEmailVerification = generateEmailVerificationToken(newCustomer);
+    console.log(generatedTokenForEmailVerification);
+    await sendVerificationEmail(newCustomer, generatedTokenForEmailVerification);
+    console.log("Email sent successfully")
+
+
     return res
     .status(201)
     .json(
-      new ApiResponse(201, "Customer created successfully", createdCustomer)
+      new ApiResponse(201, "Register Successfully please check your email to verify.", createdCustomer)
     )
   } catch (error) {
     throw new ApiError(500, error.message);
